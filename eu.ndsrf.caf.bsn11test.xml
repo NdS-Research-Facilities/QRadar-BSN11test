@@ -1,0 +1,51 @@
+<content>
+<custom_function>
+<namespace>ndsrf</namespace>
+<name>isBSN</name>
+<return_type>boolean</return_type>
+<parameter_types>string</parameter_types>
+<execute_function_name>isBSN</execute_function_name>
+<init_function_name>onInit</init_function_name>
+<script_engine>javascript</script_engine>
+<script>
+//
+// Created by : info@ndsrf.eu
+//
+// install with:
+// /opt/qradar/bin/contentManagement.pl -a update -f eu.ndsrf.caf.bsn11proef.xml
+//
+// AQL usage sample: 
+// select "BSN" as ii, NDSRF::ISBSN(ii) as ff from events last 1 DAYS 
+//
+function onInit() {
+};
+
+function isBSN(in_BSN) {
+var BSN = false;
+try {
+ bsnnr=in_BSN.toString();
+ var checksum=0; 
+ if(isNaN(bsnnr) || bsnnr.length!=9){ 
+        BSN=false;
+    } 
+    else{ 
+        for(var i=0;i&lt;8;i++){ 
+            checksum += (bsnnr.charAt(i)*(9-i)); 
+        } 
+        checksum -= bsnnr.charAt(8); 
+        if(checksum%11==0) { 
+            BSN=true;
+        } 
+    } 
+}
+catch(err) {
+    BSN = false;
+}
+finally {
+        return BSN;
+}
+}
+</script>
+<username>admin</username>
+</custom_function>
+</content>
